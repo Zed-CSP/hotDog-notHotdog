@@ -1,40 +1,27 @@
 import React, { useState } from 'react';
-import * as mobilenet from '@tensorflow-models/mobilenet';
-import '@tensorflow/tfjs';
+import './App.css';
+import ImageUploader from './components/ImageUploader';
+import ResultDisplay from './components/ResultDisplay';
 
 function App() {
-  const [image, setImage] = useState(null);
-  const [result, setResult] = useState('');
-
-  const loadImage = (event) => {
-    const file = event.target.files[0];
-    setImage(URL.createObjectURL(file));
-  };
-
-  const classifyImage = async () => {
-    const imgElement = document.getElementById('uploadedImage');
-    const model = await mobilenet.load();
-    const predictions = await model.classify(imgElement);
-    
-    // Check if any predictions match 'hotdog'
-    if (predictions.some(pred => pred.className.toLowerCase().includes('hotdog'))) {
-      setResult('Hotdog!');
-    } else {
-      setResult('Not Hotdog!');
-    }
-  };
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [result, setResult] = useState(null);
 
   return (
-    <div className="App">
-      <h1>Hotdog / Not Hotdog</h1>
-      <input type="file" accept="image/*" onChange={loadImage} />
-      {image && (
-        <div>
-          <img id="uploadedImage" src={image} alt="Uploaded" width="300" />
-          <button onClick={classifyImage}>Classify</button>
+    <div className="App flex flex-col items-center p-6 min-h-screen bg-gray-100">
+      <h1 className="text-4xl font-bold mb-4">Not Hotdog</h1>
+      <ImageUploader setSelectedImage={setSelectedImage} setResult={setResult} />
+      
+      {selectedImage && (
+        <div className="image-preview mt-4">
+          <img
+            src={URL.createObjectURL(selectedImage)}
+            alt="Uploaded"
+            className="w-72 h-72 object-cover rounded shadow-md"
+          />
         </div>
       )}
-      {result && <h2>{result}</h2>}
+      {result && <ResultDisplay result={result} />}
     </div>
   );
 }

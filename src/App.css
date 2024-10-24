@@ -36,3 +36,24 @@
     transform: rotate(360deg);
   }
 }
+.App {
+  text-align: center;
+  margin: 20px;
+}
+
+.image-uploader {
+  margin: 20px 0;
+}
+
+.image-preview img {
+  max-width: 300px;
+  height: auto;
+}
+
+.result-display h2 {
+  color: green;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+}
